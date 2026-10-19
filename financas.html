@@ -41,9 +41,55 @@ header{background:var(--card);border-bottom:1px solid var(--line);position:stick
 .top h1{font-size:18px;margin:0;flex:1}
 .month{display:flex;align-items:center;gap:6px}
 .month strong{min-width:140px;text-align:center;text-transform:capitalize}
-nav{display:flex;gap:4px;overflow-x:auto}
-nav button{border:0;background:none;padding:10px 14px;color:var(--muted);border-bottom:2px solid transparent;font:inherit;cursor:pointer;white-space:nowrap}
-nav button.on{color:var(--primary);border-color:var(--primary);font-weight:600}
+/* menu lateral */
+#side{position:fixed;top:0;left:0;bottom:0;width:230px;background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40;padding:calc(14px + env(safe-area-inset-top)) 10px calc(14px + env(safe-area-inset-bottom));transition:transform .25s ease}
+.side-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;padding:4px 8px 16px}
+.side-brand img{width:32px;height:32px;border-radius:8px}
+nav{display:flex;flex-direction:column;gap:2px;flex:1;overflow-y:auto}
+nav button{border:0;background:none;padding:11px 12px;color:var(--text);border-radius:10px;font:inherit;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px}
+nav button span{width:22px;text-align:center}
+nav button:hover{background:var(--bg)}
+nav button.on{background:var(--primary-soft);color:var(--primary);font-weight:600}
+.side-foot{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:8px;font-size:12px}
+.side-foot button{text-align:left}
+body{padding-left:230px}
+#menuBtn{display:none;font-size:18px}
+#sideBg{display:none}
+@media (max-width:900px){
+  body{padding-left:0}
+  #menuBtn{display:inline-block}
+  #side{transform:translateX(-100%);box-shadow:none}
+  body.menu-open #side{transform:none;box-shadow:0 0 30px rgba(0,0,0,.3)}
+  body.menu-open #sideBg{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:35}
+}
+/* tela de entrada e senha */
+#splash,#lock{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+#lock[hidden]{display:none}
+#splash{transition:opacity .4s ease;z-index:110}
+#splash.hide{opacity:0;pointer-events:none}
+.sp-mid{display:flex;flex-direction:column;align-items:center;gap:14px;animation:pop .6s ease}
+.sp-mid img{width:110px;height:110px;border-radius:26px;box-shadow:0 10px 30px rgba(47,111,237,.35)}
+.sp-name{font-size:24px;font-weight:700}
+.sp-bar{width:140px;height:4px;background:var(--line);border-radius:99px;overflow:hidden}
+.sp-bar i{display:block;height:100%;width:0;background:var(--primary);animation:load 2.8s ease forwards}
+.sp-by{position:absolute;bottom:calc(24px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;color:var(--muted);font-size:13px}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:none;opacity:1}}
+@keyframes load{to{width:100%}}
+.lk-box{display:flex;flex-direction:column;align-items:center;width:100%;max-width:300px}
+.lk-box img{width:64px;height:64px;border-radius:16px;margin-bottom:12px}
+.lk-title{font-size:18px;font-weight:700;text-align:center}
+.lk-sub{font-size:13px;text-align:center;min-height:18px;margin-top:4px}
+.lk-dots{display:flex;gap:16px;margin:20px 0 6px}
+.lk-dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--primary)}
+.lk-dots i.f{background:var(--primary)}
+.lk-dots.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.lk-err{color:var(--red);font-size:13px;min-height:18px;margin-bottom:10px}
+.lk-pad{display:grid;grid-template-columns:repeat(3,72px);gap:14px}
+.lk-pad button{height:72px;border-radius:50%;font-size:24px;padding:0}
+.lk-pad .lk-ghost{border:0;background:none;font-size:14px;color:var(--muted)}
+.lk-pad .lk-ghost[data-k="del"]{font-size:22px}
+.lk-forgot{margin-top:18px;border:0;background:none;color:var(--primary);font-size:13px}
 main{padding:20px 0 60px}
 button,.btn{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:7px 12px}
 button:hover{border-color:var(--primary)}
@@ -128,8 +174,8 @@ header{padding-top:env(safe-area-inset-top)}
 main{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
 @media (max-width:640px){
   .top{gap:8px}
-  .top h1{flex-basis:100%;font-size:17px}
-  .month{flex:1;justify-content:space-between}
+  .top h1{flex:1;font-size:17px}
+  .month{flex-basis:100%;justify-content:space-between}
   #mlabel{min-width:0;flex:1}
   #add{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:30;border-radius:99px;padding:14px 20px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
   .card .val{font-size:20px}
@@ -154,10 +200,48 @@ main{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
 </style>
 </head>
 <body>
+<div id="splash">
+  <div class="sp-mid"><img src="icon-512.png" alt=""><div class="sp-name">Minhas Finanças</div><div class="sp-bar"><i></i></div></div>
+  <div class="sp-by">By João Vitor S. Cipriano</div>
+</div>
+<div id="lock" hidden>
+  <div class="lk-box">
+    <img src="icon-192.png" alt="">
+    <div id="lkTitle" class="lk-title">Digite sua senha</div>
+    <div id="lkSub" class="muted lk-sub"></div>
+    <div id="lkDots" class="lk-dots"><i></i><i></i><i></i><i></i></div>
+    <div id="lkErr" class="lk-err"></div>
+    <div class="lk-pad">
+      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+      <button data-k="x" class="lk-ghost" id="lkCancel">Cancelar</button><button data-k="0">0</button><button data-k="del" class="lk-ghost">⌫</button>
+    </div>
+    <button class="lk-forgot" id="lkForgot">Esqueci a senha</button>
+  </div>
+  <div class="sp-by">By João Vitor S. Cipriano</div>
+</div>
+<aside id="side">
+  <div class="side-brand"><img src="icon-192.png" alt=""> Minhas Finanças</div>
+  <nav id="tabs">
+    <button data-t="painel" class="on"><span>🏠</span>Painel</button>
+    <button data-t="pagar"><span>💸</span>Contas a pagar</button>
+    <button data-t="receber"><span>💰</span>A receber</button>
+    <button data-t="relatorios"><span>📊</span>Relatórios e gráficos</button>
+    <button data-t="cadastros"><span>📋</span>Todos os cadastros</button>
+    <button data-t="backup"><span>💾</span>Backup e senha</button>
+  </nav>
+  <div class="side-foot">
+    <button id="lockNow">🔒 Bloquear agora</button>
+    <div class="muted">By João Vitor S. Cipriano</div>
+  </div>
+</aside>
+<div id="sideBg"></div>
 <header>
   <div class="wrap">
     <div class="top">
-      <h1>💰 Minhas Finanças</h1>
+      <button class="icon" id="menuBtn" title="Menu">☰</button>
+      <h1 id="secTitle">Painel</h1>
       <div class="month">
         <button class="icon" id="prev" title="Mês anterior">◀</button>
         <button id="mlabel" title="Escolher mês e ano"></button>
@@ -167,14 +251,6 @@ main{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
       </div>
       <button class="primary" id="add">+ Novo lançamento</button>
     </div>
-    <nav id="tabs">
-      <button data-t="painel" class="on">Painel</button>
-      <button data-t="pagar">Contas a pagar</button>
-      <button data-t="receber">A receber</button>
-      <button data-t="relatorios">Relatórios e gráficos</button>
-      <button data-t="cadastros">Todos os cadastros</button>
-      <button data-t="backup">Backup</button>
-    </nav>
   </div>
 </header>
 <main class="wrap" id="view"></main>
@@ -224,6 +300,32 @@ main{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
       <input type="file" id="fileIn" multiple>
     </div>
     <div class="dlg-f"><button type="button" data-close>Cancelar</button><button class="primary" value="ok">Salvar</button></div>
+  </form>
+</dialog>
+
+<!-- Pergunta de segurança -->
+<dialog id="dRec">
+  <form method="dialog" id="fRec">
+    <div class="dlg-h">Pergunta de segurança</div>
+    <div class="dlg-b">
+      <p class="muted" style="margin-top:0">Se você esquecer a senha, responde esta pergunta para criar uma nova, sem perder os dados.</p>
+      <label>Sua pergunta (ou dica)<input name="q" required placeholder="Ex.: Qual é o nome do meu irmão?"></label>
+      <label>Resposta<input name="a" required autocomplete="off"></label>
+      <p class="muted" style="font-size:12px;margin:0">Maiúsculas, minúsculas e acentos não fazem diferença na resposta.</p>
+    </div>
+    <div class="dlg-f"><button type="button" id="recSkip">Agora não</button><button class="primary">Salvar</button></div>
+  </form>
+</dialog>
+<dialog id="dAns">
+  <form method="dialog" id="fAns">
+    <div class="dlg-h">Esqueci a senha</div>
+    <div class="dlg-b">
+      <p id="ansQ" style="margin-top:0;font-weight:600"></p>
+      <label>Resposta<input name="a" required autocomplete="off"></label>
+      <div id="ansErr" class="lk-err"></div>
+      <button type="button" class="lk-forgot" id="wipeAll" style="margin:0;color:var(--red)">Não lembro: apagar tudo e recomeçar</button>
+    </div>
+    <div class="dlg-f"><button type="button" data-close>Cancelar</button><button class="primary">Confirmar</button></div>
   </form>
 </dialog>
 
@@ -299,6 +401,7 @@ function render(){
   $('#mlabel').textContent = ml[0].toUpperCase() + ml.slice(1) + ' ▾';
   tipStore = []; $('#tip').hidden = true;
   document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on', b.dataset.t===tab));
+  $('#secTitle').textContent = $(`#tabs button[data-t="${tab}"]`).lastChild.textContent.trim();
   const cats = new Set([...DEFAULT_CATS, ...state.items.map(i=>i.cat).filter(Boolean)]);
   $('#cats').innerHTML = [...cats].map(c=>`<option value="${esc(c)}">`).join('');
   const v = $('#view');
@@ -406,6 +509,12 @@ function viewBackup(){
     <h2>Planilha (Excel)</h2>
     <p class="muted">Exporta todos os lançamentos, mês a mês, num arquivo .csv que abre no Excel ou no Google Planilhas.</p>
     <p><button id="csv">⬇ Exportar planilha (.csv)</button></p>
+  </div>
+  <div class="card" style="max-width:640px;margin-top:12px">
+    <h2>Senha de acesso</h2>
+    <p class="muted">A senha de 4 números é pedida ao abrir o app e depois de 5 minutos fora dele. Ela impede que outra pessoa abra o app no seu aparelho, mas não é uma criptografia dos dados.</p>
+    <p><button id="chgPin">🔑 Trocar senha</button> <button id="chgRec">❓ ${getRec()?'Trocar':'Criar'} pergunta de segurança</button></p>
+    <p class="muted" style="font-size:13px">${getRec()?`Pergunta atual: “${esc(getRec().q)}”`:'⚠ Você ainda não tem pergunta de segurança. Sem ela, esquecer a senha obriga a apagar os dados.'}</p>
   </div>`;
 }
 
@@ -714,7 +823,9 @@ $('#prev').onclick = ()=>{ cur=addM(cur,-1); render(); };
 $('#next').onclick = ()=>{ cur=addM(cur,1); render(); };
 $('#today').onclick = ()=>{ cur=ymOf(todayStr()); render(); };
 $('#add').onclick = ()=>openItem();
-$('#tabs').onclick = e=>{ const t=e.target.dataset.t; if(t){ tab=t; filter='todas'; render(); } };
+$('#tabs').onclick = e=>{ const b=e.target.closest('button'); if(b && b.dataset.t){ tab=b.dataset.t; filter='todas'; document.body.classList.remove('menu-open'); render(); scrollTo(0,0); } };
+$('#menuBtn').onclick = ()=>document.body.classList.add('menu-open');
+$('#sideBg').onclick = ()=>document.body.classList.remove('menu-open');
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 $('#view').addEventListener('click', e=>{
   const b = e.target.closest('button'); if(!b) return;
@@ -727,6 +838,8 @@ $('#view').addEventListener('click', e=>{
   else if(b.id==='exp') exportar();
   else if(b.id==='imp') $('#importIn').click();
   else if(b.id==='csv') exportCSV();
+  else if(b.id==='chgPin') lockStart('change-old', true);
+  else if(b.id==='chgRec') askRecovery();
 });
 $('#view').addEventListener('change', e=>{
   const id = e.target.id;
@@ -737,6 +850,115 @@ $('#view').addEventListener('change', e=>{
   render();
 });
 render();
+
+/* ---------- senha de 4 números ---------- */
+const PIN_KEY = 'financas-pin';
+const getPin = () => { try{ return JSON.parse(localStorage.getItem(PIN_KEY)); }catch(e){ return null; } };
+async function hashPin(pin, salt){
+  const txt = salt + ':' + pin;
+  if(window.crypto && crypto.subtle){
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
+    return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  let h = 0; for(const c of txt) h = (h*31 + c.charCodeAt(0)) | 0; return 'x'+h;
+}
+let lk = { mode:'enter', buf:'', first:'', canCancel:false };
+// canCancel só é verdadeiro quando o app já está desbloqueado (trocar senha)
+const lockStart = (mode, canCancel=false) => { lk.canCancel = canCancel; showLock(mode); };
+const LK_TXT = {
+  'enter':      ['Digite sua senha', ''],
+  'create1':    ['Crie sua senha', 'Escolha 4 números para proteger seus dados'],
+  'create2':    ['Confirme a senha', 'Digite os mesmos 4 números de novo'],
+  'change-old': ['Senha atual', 'Digite a senha atual para trocar'],
+};
+function showLock(mode, err=''){
+  lk.mode = mode; lk.buf = '';
+  $('#lkTitle').textContent = LK_TXT[mode][0];
+  $('#lkSub').textContent = LK_TXT[mode][1];
+  $('#lkErr').textContent = err;
+  $('#lkCancel').style.visibility = lk.canCancel ? 'visible' : 'hidden';
+  $('#lkForgot').style.visibility = mode==='enter' ? 'visible' : 'hidden';
+  drawDots(); $('#lock').hidden = false;
+}
+function drawDots(){ document.querySelectorAll('#lkDots i').forEach((d,i)=>d.classList.toggle('f', i<lk.buf.length)); }
+function lockError(msg, mode){
+  const d = $('#lkDots'); d.classList.remove('shake'); void d.offsetWidth; d.classList.add('shake');
+  if(navigator.vibrate) navigator.vibrate(150);
+  setTimeout(()=>showLock(mode, msg), 250);
+}
+async function pinDone(){
+  const p = lk.buf, saved = getPin();
+  if(lk.mode==='enter' || lk.mode==='change-old'){
+    if(saved && await hashPin(p, saved.salt)===saved.hash){
+      if(lk.mode==='enter'){ $('#lock').hidden = true; } else showLock('create1');
+    } else lockError('Senha incorreta', lk.mode);
+  } else if(lk.mode==='create1'){ lk.first = p; showLock('create2'); }
+  else if(lk.mode==='create2'){
+    if(p!==lk.first) return lockError('As senhas não conferem. Tente de novo.', 'create1');
+    const salt = uid();
+    try{ localStorage.setItem(PIN_KEY, JSON.stringify({salt, hash: await hashPin(p, salt)})); }catch(e){}
+    $('#lock').hidden = true; lk.canCancel = false;
+    if(!getRec()) askRecovery();
+  }
+}
+
+/* pergunta de segurança (para recuperar a senha) */
+const REC_KEY = 'financas-rec';
+const getRec = () => { try{ return JSON.parse(localStorage.getItem(REC_KEY)); }catch(e){ return null; } };
+const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+function askRecovery(){ const f=$('#fRec'); f.reset(); const r=getRec(); if(r) f.q.value=r.q; $('#dRec').showModal(); }
+$('#recSkip').onclick = ()=>$('#dRec').close();
+$('#fRec').addEventListener('submit', async e=>{
+  const f = e.target, salt = uid();
+  try{ localStorage.setItem(REC_KEY, JSON.stringify({q:f.q.value.trim(), salt, hash: await hashPin(norm(f.a.value), salt)})); }catch(err){}
+  render();
+});
+$('#fAns').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const r = getRec();
+  if(r && await hashPin(norm(e.target.a.value), r.salt)===r.hash){
+    $('#dAns').close(); lockStart('create1');
+    $('#lkSub').textContent = 'Resposta certa! Crie uma senha nova';
+  } else { $('#ansErr').textContent = 'Resposta incorreta.'; e.target.a.select(); }
+});
+$('#wipeAll').onclick = ()=>{ $('#dAns').close(); wipeAll(); };
+function pinKey(k){
+  if(k==='x'){ $('#lock').hidden = true; return; }
+  if(k==='del'){ lk.buf = lk.buf.slice(0,-1); drawDots(); return; }
+  if(lk.buf.length>=4) return;
+  lk.buf += k; drawDots();
+  if(lk.buf.length===4) setTimeout(pinDone, 120);
+}
+$('.lk-pad').onclick = e=>{ const b=e.target.closest('button'); if(b) pinKey(b.dataset.k); };
+document.addEventListener('keydown', e=>{
+  if($('#lock').hidden) { if(e.key==='Escape') document.body.classList.remove('menu-open'); return; }
+  if(/^[0-9]$/.test(e.key)) pinKey(e.key);
+  else if(e.key==='Backspace') pinKey('del');
+});
+$('#lkForgot').onclick = ()=>{
+  const r = getRec();
+  if(!r) return wipeAll();
+  $('#fAns').reset(); $('#ansErr').textContent = ''; $('#ansQ').textContent = r.q;
+  $('#dAns').showModal();
+};
+async function wipeAll(){
+  if(!confirm('Sem a senha, a única forma de entrar é APAGAR todos os dados deste aparelho e criar uma senha nova.\n\nSe você tiver um arquivo de backup, poderá importá-lo depois.\n\nDeseja apagar tudo?')) return;
+  if(!confirm('Tem certeza? Isso não pode ser desfeito.')) return;
+  try{ localStorage.removeItem(KEY); localStorage.removeItem(PIN_KEY); localStorage.removeItem(REC_KEY); }catch(e){}
+  await idb('readwrite', s=>s.clear()).catch(()=>{});
+  location.reload();
+}
+$('#lockNow').onclick = ()=>{ document.body.classList.remove('menu-open'); lockStart(getPin() ? 'enter' : 'create1'); };
+// bloqueia de novo depois de 5 minutos fora do app
+let hiddenAt = 0;
+document.addEventListener('visibilitychange', ()=>{
+  if(document.hidden) hiddenAt = Date.now();
+  else if(hiddenAt && Date.now()-hiddenAt > 5*60*1000 && getPin()) lockStart('enter');
+});
+
+/* ---------- tela de entrada (3 segundos) ---------- */
+lockStart(getPin() ? 'enter' : 'create1');
+setTimeout(()=>{ $('#splash').classList.add('hide'); setTimeout(()=>$('#splash').remove(), 450); }, 3000);
 
 /* app no celular: funciona offline e pede para o navegador não apagar os dados */
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(()=>{});

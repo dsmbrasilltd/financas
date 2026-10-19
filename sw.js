@@ -1,6 +1,6 @@
 // Faz o app abrir sem internet.
 // Com internet, sempre busca a versão mais nova; sem internet, usa a cópia guardada.
-const CACHE = 'financas-v1';
+const CACHE = 'financas-rev02';
 const FILES = ['./', './index.html', './financas.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
